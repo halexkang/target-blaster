@@ -1,8 +1,9 @@
 # target-blaster
 aim trainer in golang
 
-# Image
-![Alt text](/image.png)
+# GIF / Image
+![gif](/image.gif)
+![image](/image.png)
 
 # TODO:
 - way to adjust lives / spawn speed / target grow/shrink speed

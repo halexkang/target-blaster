@@ -19,7 +19,7 @@ const width = 1024
 const height = 768
 const growRate = 0.1
 const maxSize = 20
-const lives = 5
+const lives = 50
 
 type target struct {
 	x    float64
