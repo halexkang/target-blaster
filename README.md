@@ -1,9 +1,10 @@
 # target-blaster
-aim trainer in golang
+aim trainer in golang.
 
-# GIF / Image
+Libary used: Pixel2
+
+# GIF
 ![gif](/image.gif)
-![image](/image.png)
 
 # TODO:
 - way to adjust lives / spawn speed / target grow/shrink speed
