@@ -47,6 +47,7 @@ func addTargets(targets *[]*target) {
 }
 
 func run() {
+	// create window
 	cfg := pixelgl.WindowConfig{
 		Title:  "Target Blaster",
 		Bounds: pixel.R(0, 0, width, height),
@@ -62,13 +63,16 @@ func run() {
 	for !win.Closed() {
 		win.Clear(colornames.Aliceblue)
 		dt := time.Since(last).Seconds()
-		if dt >= 0.5 {
-			addTargets(&targets)
+		if dt >= 1 { // time between creating new targets
 			last = time.Now()
+			addTargets(&targets)
 		}
-		for _, target := range targets {
-			target.resize()
-			target.drawTarget(win)
+		for i := len(targets) - 1; i >= 0; i-- {
+			targets[i].resize()
+			if targets[i].size <= 0 { // remove target if size < 0
+				targets = append(targets[:i], targets[i+1:]...)
+			}
+			targets[i].drawTarget(win)
 		}
 		win.Update()
 	}
