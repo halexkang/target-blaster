@@ -1,6 +1,9 @@
 package main
 
 import (
+	"math/rand"
+	"time"
+
 	"github.com/gopxl/pixel"
 	"github.com/gopxl/pixel/imdraw"
 	"github.com/gopxl/pixel/pixelgl"
@@ -9,8 +12,8 @@ import (
 
 const width = 1024
 const height = 768
-const growRate = 1
-const maxSize = 200
+const growRate = 0.1
+const maxSize = 20
 
 type target struct {
 	x    float64
@@ -22,9 +25,6 @@ type target struct {
 func (t *target) resize() {
 	if t.size+growRate >= maxSize {
 		t.grow = false
-	}
-	if t.size-growRate <= 0 {
-		t.grow = true
 	}
 	if t.grow {
 		t.size += growRate
@@ -41,6 +41,11 @@ func (t target) drawTarget(win *pixelgl.Window) {
 	imd.Draw(win)
 }
 
+func addTargets(targets *[]*target) {
+	target := target{x: float64(rand.Intn(width)), y: float64(rand.Intn(height)), size: 0, grow: true}
+	*targets = append(*targets, &target)
+}
+
 func run() {
 	cfg := pixelgl.WindowConfig{
 		Title:  "Target Blaster",
@@ -52,12 +57,19 @@ func run() {
 		panic(err)
 	}
 
-	target := target{x: 300, y: 500, size: 100, grow: true}
-
+	targets := []*target{}
+	last := time.Now()
 	for !win.Closed() {
 		win.Clear(colornames.Aliceblue)
-		target.resize()
-		target.drawTarget(win)
+		dt := time.Since(last).Seconds()
+		if dt >= 0.5 {
+			addTargets(&targets)
+			last = time.Now()
+		}
+		for _, target := range targets {
+			target.resize()
+			target.drawTarget(win)
+		}
 		win.Update()
 	}
 }
